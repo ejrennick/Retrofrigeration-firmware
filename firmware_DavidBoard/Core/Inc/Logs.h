@@ -14,11 +14,19 @@
 
 typedef struct
 {
-    float average_temp;
-    float min_temp;
-    float max_temp;
+    float t1;
+    float t2;
+    float t3;
+    float t4;
+    float t5;
+}TempData_t;
 
-}LogData_t;
+typedef struct
+{
+    int fan;          // either FAN_ON or FAN_OFF (all other values illegal)
+    int compressor;   // either COMPRESSOR_ON or COMPRESSOR_OFF (all other values illegal)
+
+}ActuatorData_t;
 
 /***********************************************************************************************************************
  * Prototypes
@@ -33,9 +41,11 @@ void Logs_Init(void);
 
 /**
 * Logs data from sensors, passes to control module.
-* @param[in]        LogData          struct containing the average, min and max temperature
+* @param[in]        TempData          struct containing the average, min and max temperature
 * @return           LOG_SUCCEEDED or LOG_FAILED
 */
-int Logs_LogLCD(const LogData_t *LogData);
-void Logs_LogWifi();
-int Logs_LogFlash(const LogData_t *LogData);
+int Logs_LogLCD(const TempData_t *TempData);
+int Logs_LogWifi(const TempData_t * TempData, const ActuatorData_t * ActuatorData);
+//int Logs_LogWifi(const TempData_t * TempData, const ActuatorData_t * ActuatorData)
+
+int Logs_LogFlash(const TempData_t *TempData);

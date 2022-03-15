@@ -9,7 +9,7 @@
 #define INC_ESP8266_H_
 
 
-void ESP_Init (char *SSID, char *PASSWD);
+void ESP_Init (char *SSID, char *PASSWD, char *IP);
 
 void Server_Start (void);
 int Server_Send (char *str, int Link_ID);

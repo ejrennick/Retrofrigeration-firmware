@@ -96,7 +96,7 @@ void Controller_SaveTheAfricans(void)
 
 static Controller_State_t CollectData_State(void)
 {
-	Logs_LogWifi();
+    Logs_LogWifi(&temp_probe_readings, &ActuatorCommands);
     return CTRL_LOG_DATA;
 }
 

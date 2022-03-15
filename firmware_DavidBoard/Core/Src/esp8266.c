@@ -19,17 +19,15 @@ char buffer[20];
 
 /*****************************************************************************************************************************************/
 
-void ESP_Init (char *SSID, char *PASSWD)
+void ESP_Init (char *SSID, char *PASSWD, char *IP)
 {
 	char data[80];
 
 	Ringbuf_init();
 
 	Uart_sendstring("AT+RST\r\n", wifi_uart);
-
 	/********* AT **********/
 	Uart_flush(wifi_uart);
-	Uart_sendstring("AT\r\n", wifi_uart);
 	Uart_sendstring("AT\r\n", wifi_uart);
 	while(!(Wait_for("OK\r\n", wifi_uart)));
 
@@ -38,6 +36,12 @@ void ESP_Init (char *SSID, char *PASSWD)
 	Uart_sendstring("AT+CWMODE=3\r\n", wifi_uart);
 	while (!(Wait_for("OK\r\n", wifi_uart)));
 
+//	/********* AT+STAIP=10.10.113.162 **********/
+//	Uart_flush(wifi_uart);
+//	sprintf (data, "AT+STAIP=\"%s\"\r\n", IP);
+//	Uart_sendstring(data, wifi_uart);
+//	while (!(Wait_for("OK\r\n", wifi_uart)));
+
 	/********* AT+CWJAP="SSID","PASSWD" **********/
 	Uart_flush(wifi_uart);
 //	Uart_sendstring("connecting... to the provided AP\n", pc_uart);
@@ -45,12 +49,12 @@ void ESP_Init (char *SSID, char *PASSWD)
 	Uart_sendstring(data, wifi_uart);
 	while (!(Wait_for("OK\r\n", wifi_uart)));
 
-	/********* AT+CIFSR **********/
-	Uart_flush(wifi_uart);
-	Uart_sendstring("AT+CIFSR\r\n", wifi_uart);
-	while (!(Wait_for("CIFSR:STAIP,\"", wifi_uart)));
-	while (!(Copy_upto("\"",buffer, wifi_uart)));
-	while (!(Wait_for("OK\r\n", wifi_uart)));
+//	/********* AT+CIFSR **********/
+//	Uart_flush(wifi_uart);
+//	Uart_sendstring("AT+CIFSR\r\n", wifi_uart);
+//	while (!(Wait_for("CIFSR:STAIP,\"", wifi_uart)));
+//	while (!(Copy_upto("\"",buffer, wifi_uart)));
+//	while (!(Wait_for("OK\r\n", wifi_uart)));
 
 	/********* AT+CIPMUX **********/
 	Uart_flush(wifi_uart);
@@ -69,7 +73,7 @@ void ESP_Init (char *SSID, char *PASSWD)
 int Server_Send (char *str, int Link_ID)
 {
 	int len = strlen (str);
-	char data[80];
+	char data[30];
 	sprintf (data, "AT+CIPSEND=%d,%d\r\n", Link_ID, len);
 	Uart_sendstring(data, wifi_uart);
 	while (!(Wait_for(">", wifi_uart)));
